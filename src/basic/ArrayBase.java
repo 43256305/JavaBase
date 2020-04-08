@@ -1,10 +1,7 @@
 package basic;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ArrayBase {
     //Array的基本知识和常用方法
@@ -75,6 +72,13 @@ public class ArrayBase {
         String[] stringArray = { "a", "b", "c", "d", "e" };
         ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(stringArray));
         System.out.println(arrayList);
+        //数组不能为int等基本类型，必须用Integer等包装类
+        Integer[] integerArray={1,2,3,4};
+        ArrayList<Integer> arrayList1=new ArrayList<>(Arrays.asList(integerArray));
+        System.out.println(arrayList1.size());  //:4
+        //可以用这个方法转换成List（其实本质上还是返回ArrayList）
+        List<String> stringList=Arrays.asList(stringArray);
+        System.out.println(stringList.size());  //:5
 
         //ArrayList转数组
         String[] array6=new String[5];

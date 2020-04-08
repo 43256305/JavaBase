@@ -91,8 +91,8 @@ enum ErrorCodeEn{
     //这是每个自定义枚举都有的属性
     private int code;
     private String description;
-    //构造方法
-    ErrorCodeEn(int number, String description) {
+    //构造方法  枚举构造方法只能为private，且可以省略
+    private ErrorCodeEn(int number, String description) {
         this.code = number;
         this.description = description;
     }
@@ -171,7 +171,7 @@ interface Plant {
 enum SingletonEnum{
     //此枚举的实例
     instance;
-    private SingletonEnum(){}
+    SingletonEnum(){}
 
     public void singletonMethod(){
         System.out.println("单例模式中的方法");

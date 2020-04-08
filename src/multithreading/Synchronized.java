@@ -160,7 +160,7 @@ class SynClass implements Runnable{
 
     @Override
     public void run() {
-        //修饰类，类的代码有锁，但对象的count域却不同步，每个对象有每个对象的count，要实现同步只能有一个对象（即用对象锁）
+        //修饰类，类的代码有锁（只有获得锁的才能执行此类的代码），但对象的count域却不同步，每个对象有每个对象的count，要实现同步只能有一个对象（即用对象锁）
         synchronized (SynClass.class){
             for (int i = 0; i < 5; i ++) {
                 try {

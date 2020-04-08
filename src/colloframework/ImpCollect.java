@@ -1,6 +1,7 @@
 package colloframework;
 
 import java.util.*;
+import java.util.Collections;
 
 /**
  * @program: type_
@@ -21,7 +22,9 @@ public class ImpCollect {
         AboutMap();
     }
 
+    //频繁在任意位置插入、删除时选择
     public static void aboutLinkedList(){
+        //LinkedList是线程不安全的
         String[] array={"qqq","www","eee","rrr"};
         //List<E>是一个继承了Collection的接口  LinkedList继承了AbstractCollection
         List<String> list=new LinkedList<>(Arrays.asList(array));
@@ -61,11 +64,21 @@ public class ImpCollect {
         //所以当有多个迭代器时，应该只用一个可以读写，其他都只能读
     }
 
+    //非同步、非频繁删除时选择
     public static void aboutArrayList(){
         //ArrayList也实现了List接口，他封装了一个动态再分配的对象数组
         List<String> list=new ArrayList<>();
         //ArrayList的扩容机制  没有指定大小时为10，小于0抛出异常，等于0设置为空数组，大于0就设置这个，输入容器时先把容器转换为数组，再判断大小
         //每次数组的实际大小变为原来的1.5倍
+
+        //ArrayList线程不安全，要线程安全必须用Collections生成
+        list.add("1");
+        list.add("2");
+        Iterator iterator=list.iterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+            list.add("3");   //用迭代器迭代时，更改list会报错
+        }
 
 
     }
@@ -128,5 +141,11 @@ public class ImpCollect {
         for (int key:hashMap.keySet()){
             System.out.println("key:"+key+" value:"+hashMap.get(key));
         }
+    }
+
+    public static void collections(){
+        //实现线程同步的ArrayList（其实就是把List的方法重新用Syn关键字包起来）
+        List<String> synList= Collections.synchronizedList(new ArrayList<>());
+
     }
 }

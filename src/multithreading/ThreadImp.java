@@ -15,7 +15,7 @@ public class ThreadImp {
         B.start();
         Hello2 hello2=new Hello2();
         //注意，runable中没有start方法，要启动线程需要传入Thread，后面的A为线程名字（Thread类也实现了Runable接口）
-        //一个实现了Runable接口的类可以传入多个Thread里面，所以可以共享一个类的资源
+        //一个实现了Runable接口的类的对象可以传入多个Thread里面，所以可以共享一个对象的资源
         Thread t1=new Thread(hello2,"hello2");
         t1.start();
     }

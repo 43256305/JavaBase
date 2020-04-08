@@ -1,5 +1,6 @@
 package basic;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 //包裹类和常量池
@@ -89,6 +90,9 @@ public class WraAndConPoo {
 //运行时常量池存在于内存中，也就是class常量池被加载到内存之后的版本，不同之处是：它的字面量可以动态的添加(String#intern()),符号引用可以被解析为直接引用
 //在解析阶段，会把符号引用替换为直接引用，解析的过程会去查询字符串常量池，也就是我们上面所说的StringTable，以保证运行时常量池所引用的字符串与字符串常量池中是一致的。
 
+        final Integer i=22;
+        //包裹类和String都是引用类，但用final修饰后都不能重新赋值
+//        i=44;  //报错
     }
 
     public static void changeInteger(Integer value,String s){

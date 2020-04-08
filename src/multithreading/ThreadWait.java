@@ -16,6 +16,7 @@ public class ThreadWait {
         Service s=new Service();
         //注意，要两个线程用一个锁，两个线程中一个wait，一个notify，wait和notify放在一个线程中没用
         new Thread(new TestWait(s)).start();
+//        new Thread(new TestWait(s)).start();   //如果有两个线程正在wait()，而只有一个notify(),那么会随机选取一个
         new Thread(new TestNotify(s)).start();
 
         try{
@@ -109,7 +110,7 @@ class Subtract {
             synchronized (lock) {
                 //将这里的if改成while即可保证不出现越界异常!!!!
                 //为什么while不会报错呢？if时，被唤醒后会直接从wait的下面执行，而用while时，会从wait下面执行，另外还会判断while中的条件，不符合则继续阻塞
-                if (ValueObject.list.size() == 0) {
+                while (ValueObject.list.size() == 0) {
                     System.out.println("wait begin ThreadName="
                             + Thread.currentThread().getName());
                     lock.wait();

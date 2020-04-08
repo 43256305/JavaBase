@@ -25,6 +25,8 @@ public class Constant {
 //常量在编译时就已经确定（而变量d的访问就要在运行时通过连接来访问，运行时才能确定），也就是说在编译时，下面的b不是变量b，而是hello
         String a = "hello2";
         final String b = "hello";
+        //声明为final的String也不能重新赋值
+//        b="kjkjk";  //报错
         String d = "hello";
         String c = b + "2";
         String e = d + "2";
