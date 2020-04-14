@@ -26,7 +26,7 @@ public class CallableAndFuture {
             }
         }
 
-        //FutureTask的使用
+        //FutureTask的使用  相当于callable与future的结合（事实上他确实实现了Runable和Future这两个接口）
         FutureTask<String> futureTask=new FutureTask<String>(new TaskWithResult(10));
         executorService.submit(futureTask);
         System.out.println(futureTask.get());

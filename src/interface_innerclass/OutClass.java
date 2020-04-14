@@ -7,7 +7,8 @@ package interface_innerclass;
  * @create: 2020-03-11 22:23
  **/
 
-//内部类可以访问拥有此自己的类的所有数据，包括私有
+//内部类可以访问拥有自己的类的所有数据，包括私有
+    //非静态内部类不能拥有静态属性，外部类访问静态内部类的静态属性不需要new，否则，外部类访问内部类的属性方法都需要new一个内部类
 //内部类对同一个包中的其他类隐藏
 //内部类让多继承变成可能，比如父类继承一个，内部类也可以继承
 public class OutClass {
@@ -49,14 +50,18 @@ public class OutClass {
     }
     //外部类也能访问静态内部类的私有属性
     public void staticClass(){
+        //外部类访问内部类的静态变量可以直接访问，访问非静态变量必须要new
+        System.out.println(StaticClass.id);
         StaticClass staticClass=new StaticClass();
-        System.out.println(staticClass.name);;
+        System.out.println(staticClass.name);
+//        StaticClass.name  //报错
     }
 
     //静态内部类不是全部是静态的，只是作为一个静态属性存在于外部类，但他本身是个类，也有this关键字
     static class StaticClass{
         //静态内部类不能使用外部类的非static方法和属性
         private String name;
+        private static int id;
 
         public String getName(){
             return name;
@@ -84,6 +89,7 @@ public class OutClass {
     //为public时，所有类都能通过外部类访问，为private时，只有外部类能使用  下面的InnerTest就会报错
     public class InnClass{
         private String name;
+//        private static int id;  //报错，非静态内部类不能有静态属性
 
         public InnClass(String name){
             this.name=name;

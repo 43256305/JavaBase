@@ -6,8 +6,16 @@ package multithreading;
  * @author: xjh
  * @create: 2020-03-21 14:52
  **/
+//syn语句相当于lock.lock()，有获得锁的作用，只不过syn会一直阻塞直到获得锁，不能设置等待时间，而且syn会自动帮我们释放锁
 public class Synchronized {
     public static void main(String[] args) {
+//        block();
+        object();
+//        staticMethod();
+//        class1();
+    }
+
+    public static void block(){
         //注意这是对象锁，所以只有一个对象才起作用，两个对象时，两个线程就互不干扰了
         SynThis synThis=new SynThis();
         new Thread(synThis).start();
@@ -18,6 +26,9 @@ public class Synchronized {
             e.printStackTrace();
         }
         System.out.println("-------------------------------------");
+    }
+
+    public static void object(){
         //修饰对象
         Account account=new Account("zhang san",10000f);
         AccountOperator accountOperator=new AccountOperator(account);
@@ -25,13 +36,9 @@ public class Synchronized {
             new Thread(accountOperator).start();
         }
 
+    }
 
-        try{
-            Thread.sleep(2000);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        System.out.println("-------------------------------------");
+    public static void staticMethod(){
         //修饰静态方法   这里两个SynStaticFunc对象的静态域也实现了同步
         new Thread(new SynStaticFunc(),"static field1").start();
         new Thread(new SynStaticFunc(),"static field2").start();
@@ -41,7 +48,9 @@ public class Synchronized {
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        System.out.println("-------------------------------------");
+    }
+
+    public static void class1(){
         //修饰类时，类的所有对象用同一把锁（虽然域不同步（count不同步），但执行代码的顺序是先获取锁先执行，执行结束后后一个线程执行）
         new Thread(new SynClass(),"class field1").start();
         new Thread(new SynClass(),"class field2").start();
@@ -71,7 +80,7 @@ class SynThis implements Runnable{
 }
 
 
-//修饰对象
+//修饰对象（其实修饰对象和this一样，只不多把this对象换成了别的对象）
 /**
  * 银行账户类
  */
@@ -118,8 +127,15 @@ class AccountOperator implements Runnable{
 
     public void run() {
         //可以看到，如果没用锁，最后的余额不是10000了
-        //当一个线程访问account对象时，其他试图访问account对象的线程将会阻塞，直到该线程访问account对象结束
+        //当一个线程用syn给account加锁时，只有获得了锁才能继续执行代码块里面的代码，要不然会阻塞直到获得锁
         synchronized (account) {
+            //下面的输出语句是10s运行一次，说明获取对象锁才能执行syn代码块
+            System.out.println(Thread.currentThread().getName()+" is running");
+            try{
+                Thread.sleep(10000);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
             account.deposit(500);
             account.withdraw(500);
             System.out.println(Thread.currentThread().getName() + ":" + account.getBalance());
@@ -133,7 +149,7 @@ class AccountOperator implements Runnable{
 class SynStaticFunc implements Runnable{
     private static int count;
 
-    //修饰静态方法，此方法只能方法非静态内容
+    //修饰静态方法，此方法只能访问非静态内容
     //修饰静态方法时，只要是一个类就会同步，不同对象之间也能实现锁
     public synchronized static void method() {
         for (int i = 0; i < 5; i ++) {

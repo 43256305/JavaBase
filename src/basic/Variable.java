@@ -96,12 +96,24 @@ public class Variable {
         System.out.println(Integer.MAX_VALUE);  //:2147483647
         System.out.println(Double.MAX_VALUE);   //:1.7976931348623157E308
 
-        //移位操作:相当于乘以2，除以2
+        //移位操作:相当于乘以2，除以2    右移相当于减少一位，如1000变为100，1001变为100   左移相当于增加一个0，如100变为1000
         System.out.println(10 << 1);  //：20
         System.out.println(10 >> 1);  //:5
         System.out.println(10 >>> 1);  //:5
         //无符号右移运行
         System.out.println(-5 >>> 1);  //:2147483645
         System.out.println(-5 >> 1);  //:-3
+
+        //^异或运算 （不同就为1）
+        System.out.println(8^1);  //:9    1000^1=1001
+        System.out.println(9^1);  //:8     1001^1=1000
+
+        //或运算(有一个1就是1)
+        System.out.println(8|1);  //:9
+        System.out.println(9|1);  //9
+
+        //与运算(同时为1才是1)
+        System.out.println(8&1);  //:0   1000&0001=0000
+        System.out.println(9&1);  //:1
     }
 }

@@ -12,6 +12,7 @@ import java.util.concurrent.*;
  **/
 //线程间交换信息可以用共享对象或者阻塞队列
     //生产者消费者问题运用阻塞队列：当队列容器已满，生产者线程会被阻塞，直到队列未满；当队列容器为空时，消费者线程会被阻塞，直至队列非空时为止。
+    //线程间通信：轮询volatile变量，使用wait()/notify()，使用await()/signal()
 public class AboutBlockingQueue {
     public static void main(String[] args) {
 //        array();

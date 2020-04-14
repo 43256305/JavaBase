@@ -18,6 +18,8 @@ public class Volatile {
     //如果没用volatile，那么在一个线程中，stop1改变了，只是在工作内存中改变了，还没写入主存中，那么别的线程就不能立刻收到改变的信息
     private static boolean stop1=false;
 
+    //volatile实现原理，缓存一致协议，线程每次写入时，会导致其他线程的缓存失效，从而重新加载新写入的变量
+
     private volatile static int count=0;
     private volatile static AtomicInteger atoCount=new AtomicInteger(0);
 
@@ -46,7 +48,9 @@ public class Volatile {
                 @Override
                 public void run() {
                     count++;
-                    atoCount.getAndIncrement();  //自增1
+                    atoCount.incrementAndGet();  //自增1
+                    //AtomicInteger使用了cas（即循环（do while循环）检验current与预期值是否相同，不相同则重新取值自增）
+                    //ABA问题：加入valueoffset，每次还要比较版本是否相同，相同则更新，不同重新取值
                 }
             }).start();
         }

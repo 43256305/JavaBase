@@ -54,6 +54,7 @@ class Service{
     public void testNotify(){
         //会唤醒ThreadA，但是此时它并不立即释放锁，接下来它睡眠了5秒钟(sleep()是不释放锁的，事实上sleep()也可以不在同步代码块中调用)，直到第28行
         // ，退出synchronized修饰的临界区时，才会把锁释放
+        //运行notify后，并不是立刻让wait线程拥有锁，而是让wait线程进入就绪队列，等notify线程释放锁后（即退出syn区），就绪队列竞争锁
         synchronized (this.lock){
             System.out.println("begin notify() ThreadName="+ Thread.currentThread().getName() + " time="+ System.currentTimeMillis());
             lock.notify();

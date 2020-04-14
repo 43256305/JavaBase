@@ -46,7 +46,10 @@ public class TypeOfData {
         //用format创建一个格式化字符串
         String s2=String.format("the shirt sell %8.2f yuan",2.3333);
 
-
+        //do while循环至少会执行一次（他是先执行do，然后判断条件）
+        do{
+            System.out.println("loop do while!");
+        }while (false);
 
     }
 }
