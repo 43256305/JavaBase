@@ -79,7 +79,7 @@ class Singleton{
     }
 
     public static Singleton getInstance() {
-        if(instance==null) {
+        if(instance==null) {  //此if确保在instance不会null时，线程不会一直去获取锁
             synchronized (Singleton.class) {
                 if(instance==null)  //为什么这里还需要一个if呢？假如线程1进入第一个if，而线程2先获得了锁，显然，线程1阻塞直到线程2执行完毕
                     //然后线程1获得锁，然后（instance==null)不成立（volatile可见性），就确保线程1不会新new一个对象，如果没有第二个if

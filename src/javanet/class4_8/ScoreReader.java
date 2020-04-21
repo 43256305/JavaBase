@@ -1,6 +1,7 @@
 package javanet.class4_8;
 
 import java.io.*;
+import java.util.Random;
 
 /**
  * @program: type_

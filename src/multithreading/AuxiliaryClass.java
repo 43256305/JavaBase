@@ -1,8 +1,6 @@
 package multithreading;
 
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.*;
 
 /**
  * @program: type_
@@ -11,13 +9,16 @@ import java.util.concurrent.CyclicBarrier;
  * @create: 2020-04-07 16:27
  **/
 
-//CyclicBarrier 和 CountDownLatch 都可以用来让一组线程等待其它线程。与 CyclicBarrier 不同的是，CountdownLatch 不能重新使用。
+//区别：1.CountDownLatch一个或者多个线程，等待其他多个线程完成某件事情之后才能执行  CyclicBarrier多个线程互相等待，直到到达同一个同步点，再继续一起执行。
+// 2.与 CyclicBarrier 不同的是，CountdownLatch 不能重新使用。
 public class AuxiliaryClass {
-    public static void main(String[] args) {
-        latch();
+    public static void main(String[] args) throws InterruptedException{
+//        latch();
 //        cyclicBarrier();
+        testSemaphore();
     }
 
+    //CountDownLatch使用场景：一个典型应用场景就是启动一个服务时，主线程需要等待多个组件加载完毕，之后再继续执行。
     public static void latch(){
         final CountDownLatch latch=new CountDownLatch(2);
         new Thread(){
@@ -143,5 +144,57 @@ public class AuxiliaryClass {
             }
             System.out.println("所有线程写入完毕，继续处理其他任务...");
         }
+    }
+
+    // 请求的数量
+    private static final int threadCount = 550;
+    /**
+    * @Description: synchronized 和 ReentrantLock 都是一次只允许一个线程访问某个资源，Semaphore(信号量)可以指定多个线程同时访问某个资源
+     *作用：每次都只让固定数量的线程执行
+     *
+     *执行 acquire 方法阻塞，直到有一个许可证可以获得然后拿走一个许可证；每个 release 方法增加一个许可证，这可能会释放一个阻塞的
+     * acquire 方法。然而，其实并没有实际的许可证这个对象，Semaphore 只是维持了一个可获得许可证的数量。 Semaphore 经常用于限制获取某种
+     * 资源的线程数量。
+     *
+     * Semaphore 有两种模式，公平模式和非公平模式。new Semaphore(20,true)
+     *
+     * Semaphore与CountDownLatch一样，也是共享锁的一种实现。它默认构造AQS的state为permits（如设置permits=20时，初始state=20）。
+     * 当执行任务的线程数量超出permits,那么多余的线程将会被放入阻塞队列Park,并自旋判断state是否大于0。只有当state大于0（如果等于0，
+     * 说明减了20次，每次成功acquire一次，state-1）的时候，阻塞的线程才能继续执行,此时先前执行任务的线程继续执行release方法，release
+     * 方法使得state的变量会加1，那么自旋的线程便会判断成功。 如此，每次只有最多不超过permits数量的线程能自旋成功，便限制了执行任务线
+     * 程的数量。
+    * @Param:
+    * @return:
+    * @Author: xjh
+    * @Date: 2020/4/17
+    */
+    public static void testSemaphore() throws InterruptedException{
+        // 创建一个具有固定线程数量的线程池对象（如果这里线程池的线程数量给太少的话你会发现执行的很慢）
+        ExecutorService threadPool = Executors.newFixedThreadPool(300);
+        // 一次只能允许执行的线程数量。
+        final Semaphore semaphore = new Semaphore(20);
+
+        for (int i = 0; i < threadCount; i++) {
+            final int threadnum = i;
+            threadPool.execute(() -> {// Lambda 表达式的运用
+                try {
+                    semaphore.acquire();// 获取一个许可，所以可运行线程数量为20/1=20(如果指定为5，则线程数量为4)，还有tryAcquire()
+                    test(threadnum);
+                    semaphore.release();// 释放一个许可
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            });
+        }
+        threadPool.shutdown();
+        System.out.println("finish");
+    }
+
+    private static void test(int threadnum) throws InterruptedException {
+        Thread.sleep(1000);// 模拟请求的耗时操作
+        System.out.println("threadnum:" + threadnum);
+        Thread.sleep(1000);// 模拟请求的耗时操作
     }
 }

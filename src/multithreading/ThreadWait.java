@@ -110,7 +110,9 @@ class Subtract {
         try {
             synchronized (lock) {
                 //将这里的if改成while即可保证不出现越界异常!!!!
-                //为什么while不会报错呢？if时，被唤醒后会直接从wait的下面执行，而用while时，会从wait下面执行，另外还会判断while中的条件，不符合则继续阻塞
+                //为什么while不会报错呢？用if时：被唤醒立刻执行下面的remove操作，报错  用while时：被唤醒执行下一个循环，发现size==0，又执行
+                //循环（所以会看到线程2begin两次），wait后一致阻塞，不会执行下面的remove语句
+                //所以wait一般放在while中，真正的业务代码放在while循环下面，while循环的条件是不能执行业务代码时为真（如这里size==0就不能执行remove操作了）
                 while (ValueObject.list.size() == 0) {
                     System.out.println("wait begin ThreadName="
                             + Thread.currentThread().getName());

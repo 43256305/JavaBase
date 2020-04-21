@@ -17,11 +17,12 @@ public class AboutLock {
     //Lock是一个接口  ReentrantLock()可重入锁
     private Lock lock=new ReentrantLock();
     //可重入锁（syn也是可重入锁）：同一个线程，外层函数获得锁之后，内层函数仍有获得该锁的代码，但是不受影响，但是获得几次就要释放几次。
-    //比如方法a调用方法b，a要获取锁，b也要获取锁，此时b永远获得不了锁，则会永远阻塞，可重入锁可解决这个问题
+    //比如方法a调用方法b，a要获取锁，b也要获取锁，此时b永远获得不了锁，则会永远阻塞，可重入锁可解决这个问题（内部用state记录了重入次数）
 
-    //syn和synchronized的主要区别是
-    //ReentrantLock是在java层面上实现的，基于AQS(AbstractQueuedSynchronized)框架下使用自旋CAS机制实现，另外ReentrantLock扩展了很多额外的
-    // 同步方法，比如公平锁，非公平锁，可中断锁，非阻塞锁。而synchronized是基于JVM层面实现的，使用计数监视锁来做同步。
+    //syn(非公平锁)和reentrantlock（可选是否公平，默认非公平锁）的主要区别是（公平锁：先来先获得锁，非公平锁：先到的线程还没被唤醒，新到的线程直接获取锁）
+    //ReentrantLock是在java层面上实现的（就是可以看到相关代码），基于AQS(AbstractQueuedSynchronized)框架下使用自旋CAS机制实现，
+    // 另外ReentrantLock扩展了很多额外的同步方法，比如公平锁，非公平锁，可中断锁，非阻塞锁。而synchronized是基于JVM层面实现的（不能看到
+    // 具体实现），使用计数监视锁来做同步。
 
     public static void main(String[] args) throws Exception{
 //        lock();
@@ -63,7 +64,7 @@ public class AboutLock {
 
     //需要参与同步的方法
     private void method(Thread thread) {
-        lock.lock();  //获得锁  如果已经被其他线程获取，则此线程等待，直到别的线程释放锁，此线程才继续执行lock()方法获得锁并继续执行
+        lock.lock();  //获得锁  如果已经被其他线程获取，则此线程等待状态，直到别的线程释放锁，此线程才继续执行lock()方法获得锁并继续执行
 //        lock.tryLock();  //尝试获取锁，如果成功，返回true，否则false
 //        tryLock(long time,TimeUnit unit)：在一定的时间内尝试获得锁，并且在这段时间直接可以被打断。成功，返回 true，否则，返回 false。
 //        lock.lockInterruptibly()，线程A获取通过此语句获取锁后，线程B运行到这里时会等待，对线程B调用interrupt()能够中断线程B的等待过程。

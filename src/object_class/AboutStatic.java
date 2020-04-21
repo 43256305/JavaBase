@@ -66,7 +66,7 @@ public class AboutStatic {
         return  i;
     }
 
-    //https://blog.csdn.net/eff666/article/details/52203406  java加载顺序
+    //https://blog.csdn.net/eff666/article/details/52203406  java类加载顺序
     //编译->加载->链接（验证+准备+解析）->初始化（使用前的准备  new（或反射,调用static方法等）的时候初始化）->使用->卸载  下面的所有加载步骤都是在初始化时加载的
     //（静态变量、静态初始化块）–>（变量、初始化块）–> 构造器；如果有父类，则顺序是：父类static方法 –> 子类static方法 –> 父类构造方法- -> 子类构造方法
 }

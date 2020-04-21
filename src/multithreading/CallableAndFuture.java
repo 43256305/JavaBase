@@ -16,7 +16,7 @@ public class CallableAndFuture {
         ArrayList<Future<String>> results=new ArrayList<>();  //Future相当于接受Callable接口返回值的容器
         for (int i=0;i<5;i++){
             //submit返回Future对象
-            results.add(executorService.submit(new TaskWithResult(i)));   //执行Callable接口类用的是submit，而Runable用的是execute
+            results.add(executorService.submit(new TaskWithResult(i)));   //submit方法有返回值，execute没有返回值
         }
         for (Future<String> f:results){
             if (f.isDone()){  //判断是否运行结束

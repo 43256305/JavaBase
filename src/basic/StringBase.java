@@ -23,7 +23,7 @@ public class StringBase {
         String str1="kkkkjklkjpo";
         System.out.println(str1==f);  //:true
 
-//此步骤生成了两个对象，一个String在常量池中，一个h指向的对象在堆中，注意，常量池中的String也是对象
+//此步骤生成了一个或两个对象，一个String在常量池中（如果常量池中已经存在则不重新创建），一个h指向的对象在堆中，注意，常量池中的String也是对象
         String h=new String("kkk");
 
 //直接赋值（没有使用new），c指向常量池（也就是说String类型的值不能改变，赋值也只是改变了引用而已）

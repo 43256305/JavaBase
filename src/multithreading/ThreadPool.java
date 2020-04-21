@@ -1,9 +1,6 @@
 package multithreading;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @program: type_
@@ -14,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 //为什么要用线程池？
 //1.减少了创建和销毁线程的次数，每个工作线程都可以被重复利用，可执行多个任务。2.可以根据系统的承受能力，调整线程池中工作线线程的数目，
 // 防止因为消耗过多的内存，而把服务器累趴下(每个线程需要大约1MB内存，线程开的越多，消耗的内存也就越大，最后死机)
+    //3.提高响应速度， 如果任务到达了，相对于从线程池拿线程，重新去创建一条线程执行，速度肯定慢很多。
 public class ThreadPool {
     public static void main(String[] args) throws InterruptedException{
 //        newCached();
@@ -23,7 +21,9 @@ public class ThreadPool {
     }
 
     /**
-    * @Description: 线程池为无限大，当执行第二个任务时第一个任务已经完成时，会复用执行第一个任务的线程，而不用每次新建线程。
+    * @Description: 线程池为无限大（Integer.MAXVALUE），当执行第二个任务时第一个任务已经完成时，会复用执行第一个任务的线程，而不用每次新建线程。
+     * 此线程池实现为syn阻塞队列，所以阻塞队列中不存储线程，线程加入就要执行（要么复用已经存在的线程要么新建线程）（以非核心线程执行，
+     * 空闲存活时间为60s）
     * @Param: 
     * @return: 
     * @Author: xjh
@@ -52,7 +52,8 @@ public class ThreadPool {
     }
 
     /**
-    * @Description:创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。
+    * @Description:创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。（他的线程队列永远不会满（最大值为Integer.MAXVALUE）
+     * 所以他可以一直把线程加入进去，而不会去与最大线程数量（我们指定的数量3）比较），没有非核心线程，自然存活时间无意义
     * @Param:
     * @return:
     * @Author: xjh
@@ -108,6 +109,7 @@ public class ThreadPool {
 
     /**
     * @Description: 创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行
+     * 其他线程无限存储在LinkedBlockingQueue<Runnable>()中，等待唯一的核心空闲（所以工作的自始至终只是一个线程）
     * @Param: 
     * @return: 
     * @Author: xjh
