@@ -14,6 +14,8 @@ public class AboutConcurrentHashMap {
         //concurrenthashmap运用锁分段技术
         ConcurrentHashMap map=new ConcurrentHashMap();
         map.put("1","value");
+        map.get("1");
+        map.size();
 
     }
 }

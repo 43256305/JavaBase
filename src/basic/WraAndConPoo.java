@@ -71,8 +71,10 @@ public class WraAndConPoo {
         Integer i6=10;
         Integer i7=10;
         Integer i8=i7+i6;
-        //而包装类的常量相加只要结果相等且[-128,127]最后也相等
+        //而包装类相加只要结果相等且[-128,127]最后也相等
         System.out.println(i1==i8);  //：true
+        //因为拆箱所以用new生成的类相加只要最后结果在范围内也相等
+        System.out.println(i1==(new Integer(10)+new Integer(10)));  //:true
 
         Integer i4=999;
         Integer i5=999;

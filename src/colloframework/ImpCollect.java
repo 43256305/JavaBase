@@ -11,15 +11,15 @@ import java.util.Collections;
  **/
 public class ImpCollect {
     public static void main(String[] args) {
-        aboutLinkedList();
-        System.out.println("-----------------------------------------");
+//        aboutLinkedList();
+//        System.out.println("-----------------------------------------");
         aboutArrayList();
-        System.out.println("-----------------------------------------");
-        aboutSet();
-        System.out.println("-----------------------------------------");
-        treeSet();
-        System.out.println("-----------------------------------------");
-        AboutMap();
+//        System.out.println("-----------------------------------------");
+//        aboutSet();
+//        System.out.println("-----------------------------------------");
+//        treeSet();
+//        System.out.println("-----------------------------------------");
+//        AboutMap();
     }
 
     //频繁在任意位置插入、删除时选择
@@ -68,7 +68,7 @@ public class ImpCollect {
     public static void aboutArrayList(){
         //ArrayList也实现了List接口，他封装了一个动态再分配的对象数组
         List<String> list=new ArrayList<>();
-        //ArrayList的扩容机制  没有指定大小时为10，小于0抛出异常，等于0设置为空数组，大于0就设置这个，输入容器时先把容器转换为数组，再判断大小
+        //ArrayList的扩容机制  没有指定大小时为10（先声明为size为0的数组，再在第一个add时初始化大小为10），小于0抛出异常，大于或等于0就设置为这个，输入容器时先把容器转换为数组，再判断大小
         //每次数组的实际大小变为原来的1.5倍
 
         //ArrayList线程不安全，要线程安全必须用Collections生成
